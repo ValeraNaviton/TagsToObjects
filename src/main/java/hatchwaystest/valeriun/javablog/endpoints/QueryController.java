@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import hatchwaystest.valeriun.javablog.Post;
 import hatchwaystest.valeriun.javablog.PostList;
 import hatchwaystest.valeriun.javablog.services.CachedTagLoaders;
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class QueryController {
@@ -41,30 +42,26 @@ public class QueryController {
         String errorBody = validator.validateRequest(tags, sortBy, direction);
 
         if (errorBody != null) {
-            httpResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return errorBody;
+            return reportServerError(httpResponse, errorBody);
         }
 
-        List<String> tagArray = Arrays.asList(tags.split(","));
-
-        List<Future<PostList>> promises = cachedLoaders.spawnLoaders(tagArray);
-        List<Post> allPosts = new ArrayList<>();
-
-        for (Future<PostList> promise : promises) {
-            try {
-                allPosts.addAll(promise.get().getListOfPosts());
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
-        allPosts = deduplicator.removeDuplicates(allPosts);
-        postSorter.sortPosts(allPosts, sortBy, direction);
         try {
+            List<Post> allPosts = cachedLoaders.getByTagList(Arrays.asList(tags.split(",")));
+            allPosts = deduplicator.removeDuplicates(allPosts);
+            postSorter.sortPosts(allPosts, sortBy, direction);
+
             return new ObjectMapper().writeValueAsString(new PostList(allPosts));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return null;
+            return reportServerError(httpResponse, "failed to process 3rd party response: " + e.getMessage());
+        } catch (CachedTagLoaders.RemoteServerAccessException e) {
+            e.printStackTrace();
+            return reportServerError(httpResponse, "failed to call 3rd party server: " + e.getMessage());
         }
+    }
 
+    private String reportServerError(HttpServletResponse httpResponse, String body) {
+        httpResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return body;
     }
 }
