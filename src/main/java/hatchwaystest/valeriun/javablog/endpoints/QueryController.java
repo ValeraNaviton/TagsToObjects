@@ -38,7 +38,7 @@ public class QueryController {
                    @RequestParam(required = false, defaultValue = "asc") String direction
     ) {
 
-        /*N1*/String errorBody = validator.validateRequest(tags, sortBy, direction);
+        String errorBody = validator.validateRequest(tags, sortBy, direction);
 
         if (errorBody != null) {
             httpResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -57,8 +57,7 @@ public class QueryController {
                 e.printStackTrace();
             }
         }
-        /*N2*/allPosts = deduplicator.removeDuplicates(allPosts);
-        /*N3*/
+        allPosts = deduplicator.removeDuplicates(allPosts);
         postSorter.sortPosts(allPosts, sortBy, direction);
         try {
             return new ObjectMapper().writeValueAsString(new PostList(allPosts));
