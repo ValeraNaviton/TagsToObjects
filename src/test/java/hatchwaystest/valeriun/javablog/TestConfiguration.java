@@ -57,7 +57,7 @@ public class TestConfiguration implements WebMvcConfigurer {
 
     @Bean
     public CachedTagLoaders getCachedLoaders() {
-        return new CachedTagLoaders(TEST_LOADER);
+        return new CachedTagLoaders();
     }
 
     @Bean

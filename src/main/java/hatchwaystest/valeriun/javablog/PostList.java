@@ -14,8 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostList {
-
     @JsonProperty(value = "posts")
     private List<Post> listOfPosts = new ArrayList<>();
-
 }

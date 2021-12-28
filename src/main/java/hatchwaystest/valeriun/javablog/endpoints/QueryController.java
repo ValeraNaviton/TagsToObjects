@@ -2,6 +2,7 @@ package hatchwaystest.valeriun.javablog.endpoints;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hatchwaystest.valeriun.javablog.services.RemoteLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -49,8 +50,11 @@ public class QueryController {
             return new ObjectMapper().writeValueAsString(new PostList(allPosts));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return reportServerError(httpResponse, "failed to process 3rd party response: " + e.getMessage());
-        } catch (CachedTagLoaders.RemoteServerAccessException e) {
+            return reportServerError(httpResponse, "unknown exception occurred: " + e.getMessage());
+        } catch (RemoteLoader.InvalidRemoteServerDataException e) {
+            e.printStackTrace();
+            return reportServerError(httpResponse, "failed to parse 3rd party server data: " + e.getMessage());
+        } catch (RemoteLoader.RemoteServerAccessException e) {
             e.printStackTrace();
             return reportServerError(httpResponse, "failed to call 3rd party server: " + e.getMessage());
         }
