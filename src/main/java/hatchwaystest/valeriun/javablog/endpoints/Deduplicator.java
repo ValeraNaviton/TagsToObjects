@@ -9,9 +9,9 @@ import java.util.List;
 @Component
 public class Deduplicator {
 
-    public List<Post> removeDuplicates(List<Post> unfiltered) {
+    public List<Post> removeDuplicates(List<Post> bag) {
         List<Post> result = new ArrayList<>();
-        for (Post element : unfiltered) {
+        for (Post element : bag) {
             if (!result.contains(element)) {
                 result.add(element);
             }

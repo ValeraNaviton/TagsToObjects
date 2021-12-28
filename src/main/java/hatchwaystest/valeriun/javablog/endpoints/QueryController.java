@@ -36,10 +36,10 @@ public class QueryController {
                    @RequestParam(required = false, defaultValue = "asc") String direction
     ) {
 
-        String errorBody = validator.validateRequest(tags, sortBy, direction);
+        String errorText = validator.validateRequest(tags, sortBy, direction);
 
-        if (errorBody != null) {
-            return reportServerError(httpResponse, errorBody);
+        if (errorText != null) {
+            return reportServerError(httpResponse, errorText);
         }
 
         try {

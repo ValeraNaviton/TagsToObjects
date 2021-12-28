@@ -8,9 +8,8 @@ import java.util.Set;
 @Component
 public class RequestValidator {
 
-
-    public String validateRequest(String tags, String sortBy, String direction) {
-        if (tags == null || tags.isEmpty()) {
+    public String validateRequest(String tagList, String sortingAttribute, String direction) {
+        if (tagList == null || tagList.isEmpty()) {
             return "{\"error\":\"Tags parameter is required\"}";
         }
         Set<String> validDirections = new HashSet<>(Arrays.asList("desc", "asc"));
@@ -18,7 +17,7 @@ public class RequestValidator {
             return "{\"error\":\"direction parameter is invalid\"}";
         }
         Set<String> validSorts = new HashSet<>(Arrays.asList("likes", "popularity", "reads", "id"));
-        if (sortBy.isEmpty() || !validSorts.contains(sortBy)) {
+        if (sortingAttribute.isEmpty() || !validSorts.contains(sortingAttribute)) {
             return "{\"error\":\"sortBy parameter is invalid\"}";
         }
         return null;

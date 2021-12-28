@@ -22,20 +22,20 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CachedTagLoaders {
     @Autowired
-    private RemoteLoader hatchwaysLoader;
+    private RemoteLoader remoteLoader;
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(32);
 
     private final CacheLoader<String, PostList> loader = new CacheLoader<String, PostList>() {
         @Override
         public PostList load(final String tag) throws Exception {
-            return hatchwaysLoader.loadByTag(tag);
+            return remoteLoader.loadByTag(tag);
         }
     };
 
     private final LoadingCache<String, PostList> cache = CacheBuilder.newBuilder()
-            .maximumSize(500)
-            .expireAfterWrite(10, TimeUnit.MINUTES)
+            .maximumSize(666)
+            .expireAfterWrite(666, TimeUnit.SECONDS)
             .build(loader);
 
     public List<Post> getByTagList(List<String> tagList) throws RemoteServerAccessException, InvalidRemoteServerDataException {
