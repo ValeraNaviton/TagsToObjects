@@ -11,9 +11,4 @@ public class PingController {
         return "{\"success\":true}";
     }
 
-//    @GetMapping(value = "/", produces ="application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    String root() {
-//        return "{\"it\":3.11}";
-//    }
 }

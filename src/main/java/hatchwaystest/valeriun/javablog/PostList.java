@@ -1,26 +1,21 @@
 package hatchwaystest.valeriun.javablog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostList {
 
     @JsonProperty(value = "posts")
     private List<Post> listOfPosts = new ArrayList<>();
 
-    public PostList() { }
-
-    public PostList(List<Post> listOfPosts) {
-        this.listOfPosts = listOfPosts;
-    }
-
-    public List<Post> getListOfPosts() {
-        return listOfPosts;
-    }
-
-    public void setListOfPosts(List<Post> posts) {
-        this.listOfPosts = posts;
-    }
 }

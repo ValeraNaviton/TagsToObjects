@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -126,6 +127,18 @@ class TestApplicationTests {
 					}
 				})
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	void testHashAndEquals(){
+		Post post1 = new Post("Elon Musk", 11, 11, 2, 1.0, 1, Arrays.asList("startups", "technology"));
+		Post post2 = new Post("Elon2 Musk2", 12, 11, 3, 1.1, 2, Arrays.asList("Z1", "Z2"));
+		Assert.isTrue(post1.equals(post2));
+		Assert.isTrue(post1.hashCode() == post2.hashCode());
+		post1 = new Post("Elon Musk", 11, 11, 2, 1.0, 1, Arrays.asList("startups", "technology"));
+		post2 = new Post("Elon Musk", 11, 12, 2, 1.0, 1, Arrays.asList("startups", "technology"));
+		Assert.isTrue(!post1.equals(post2));
+		Assert.isTrue(post1.hashCode() != post2.hashCode());
 	}
 
 	private PostList fromJson(MvcResult mvcResult) throws UnsupportedEncodingException, JsonProcessingException {

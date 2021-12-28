@@ -16,10 +16,6 @@ import java.util.List;
 @RestController
 public class QueryController {
 
-    public QueryController(CachedTagLoaders cachedLoaders) {
-        this.cachedLoaders = cachedLoaders;
-    }
-
     @Autowired
     private RequestValidator validator;
 

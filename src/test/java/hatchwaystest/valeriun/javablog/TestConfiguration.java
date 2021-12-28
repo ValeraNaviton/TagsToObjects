@@ -82,7 +82,7 @@ public class TestConfiguration implements WebMvcConfigurer {
 
     @Bean
     public QueryController getControllerLoader() {
-        return new QueryController(new CachedTagLoaders(TEST_LOADER));
+        return new QueryController();
     }
 
 }
